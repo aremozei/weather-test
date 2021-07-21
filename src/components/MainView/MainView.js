@@ -1,22 +1,30 @@
 import React, {useState, useEffect, useReducer} from 'react';
 import CityCurrentWeather from '../CityCurrentWeather/CityCurrentWeather';
+import CityHeader from '../shared/CityHeader/CityHeader';
 import WeatherApi from '../../api/WeatherApi';
 import Input from '../shared/Input/Input';
 
-const searchInputReducer = (lastSearchState, inputContents) => {
-	if (inputContents.type === 'USER_INPUT') {
+const searchInputReducer = (lastSearchState, action) => {
+	if (action.type === 'USER_INPUT') {
 		return {
-			value: inputContents.value,
-			isValid: inputContents.value.trim().length > 4,
-			type: inputContents.type,
+			value: action.value,
+			isValid: action.value.trim().length > 4,
+			type: action.type,
 		};
 	}
 
-	if (inputContents.type === 'INPUT_BLUR') {
+	if (action.type === 'INPUT_BLUR') {
 		return {
 			value: lastSearchState.value,
 			isValid: lastSearchState.value.trim().length > 4,
 			type: lastSearchState.type,
+		};
+	}
+
+	if (action.type === 'CLEAR') {
+		return {
+			value: '',
+			isValid: false,
 		};
 	}
 
@@ -27,8 +35,8 @@ const searchInputReducer = (lastSearchState, inputContents) => {
 // In a simpler way, but I wanted to show off using Reducer
 // Im going to add the useState solution in a separate file, just for the sake of it
 
-// Use Reducer has more control, allows complex state,a nd covers more corner case scenarios
-// In less steps
+// Use Reducer has more control, allows complex state,and covers more corner case scenarios
+// In less steps. Ex, I would hadve to add a useEffect for the blur, changes on the input, and updated values
 // Still, reducer is more useful in scenarios where I handle multiple components
 // That share similar states, not a single simple input
 
@@ -38,6 +46,7 @@ const searchInputReducer = (lastSearchState, inputContents) => {
 const MainView = () => {
 	const [searchInputValueIsValid, setSearchFormIsValid] = useState(false);
 	const [weatherSingleCityResults, setWeatherSingleCityResults] = useState(null);
+	const [alternateSearchAndMainView, setAlternateView] = useState(false);
 
 	const [searchInputState, dispatchSearch] = useReducer(
 		searchInputReducer,
@@ -59,6 +68,13 @@ const MainView = () => {
 			clearTimeout(avoidConstantCallsWithTimeout);
 		};
 	}, [searchIsValid]);
+
+	useEffect(() => {
+		if (alternateSearchAndMainView === false) {
+			setWeatherSingleCityResults(null);
+			dispatchSearch({type: 'CLEAR'});
+		}
+	}, [alternateSearchAndMainView]);
 
 	// Basically I'm handling the search using onchange and enter key;
 	// Blur will only trigger an update of the value, and pass again on the validation
@@ -86,6 +102,10 @@ const MainView = () => {
 		setWeatherSingleCityResults(null);
 	};
 
+	const onHeaderClickHandler = () => {
+		setAlternateView(!alternateSearchAndMainView);
+	};
+
 	// Kinda security breach to leave api keys in the air like this, but meh
 	const submitSearch = async () => {
 		const currentCityWeather = await WeatherApi.get('', {
@@ -95,25 +115,29 @@ const MainView = () => {
 				aqui: 'no',
 			},
 		});
-		setWeatherSingleCityResults(currentCityWeather);
+		setWeatherSingleCityResults(currentCityWeather.data);
 	};
 
 	return (
 		<React.Fragment>
-			<Input
-				type={'text'}
-				value={searchInputState.value}
-				placeholder={'Search City..'}
-				id={Math.random()}
-				className={'something'}
-				onChangeFn={searchInputHandler}
-				onBlurFn={validateSearchInput}
-				onKeyDownFn={handleKeyDown}
-			/>
-			{weatherSingleCityResults !== null
-				&& <CityCurrentWeather cityWeatherData={weatherSingleCityResults}/>
+			{weatherSingleCityResults === null
+				&& <Input
+					type={'text'}
+					value={searchInputState.value}
+					placeholder={'Search City..'}
+					id={Math.random()}
+					className={'something'}
+					onChangeFn={searchInputHandler}
+					onBlurFn={validateSearchInput}
+					onKeyDownFn={handleKeyDown}
+				/>
 			}
-			{/* {props} */}
+			{weatherSingleCityResults !== null
+				&& <>
+					<CityHeader cityName={weatherSingleCityResults.location.name} onClickHandler={onHeaderClickHandler}/>
+					<CityCurrentWeather cityWeatherData={weatherSingleCityResults} />
+				</>
+			}
 		</React.Fragment>
 	);
 };
