@@ -1,16 +1,7 @@
-# Getting Started with Create React App
-
+# GILA Test
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-
-The branch develop is the branch most updated, check the new stuff there.
+The branch develop is the most updated, check the new stuff there.
 
 I also added a linter, XO, which is my personal favorite
 https://github.com/xojs/xo
