@@ -6,8 +6,7 @@
     "extends": [
         "react-app",
         "plugin:react/recommended",
-        "xo",
-        "prettier"    
+        "xo"
     ],
     "parser": "babel-eslint",
     "parserOptions": {
@@ -18,10 +17,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react",
-        "prettier"
+        "react"
     ],
     "rules": {
-        "prettier/prettier": "error"
     }
 }
