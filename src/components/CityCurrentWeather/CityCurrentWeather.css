@@ -1,0 +1,50 @@
+.city-weather-main-data {
+    display: flex;
+    flex-direction: column;
+}
+
+.city-weather-index {
+    display: flex;
+    flex-direction: column;
+}
+.city-weather-index label {
+    text-align: center;
+}
+
+.city-weather-index img {
+    height: 100px;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.condition-label {
+    font-weight: bold;
+    font-size: 33px;
+}
+
+.last-updated {
+    margin: 6px 0px 6px 0px;
+}
+
+.temperature-label {
+    font-size: 100px;
+    font-weight: bolder;
+}
+
+.city-weather-misc {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.city-weather-misc img {
+    height: 50px;
+}
+
+.city-weather-misc .left-title-label {
+    vertical-align: top;
+}
+.city-weather-misc .right-title-label {
+    vertical-align: top;
+}

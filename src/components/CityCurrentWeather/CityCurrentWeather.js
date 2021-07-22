@@ -1,33 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './CityCurrentWeather.css';
+import AirIcon from '../../icons/airblack.svg';
+import PressureIcon from '../../icons/pressureblack.svg';
+import SunIcon from '../../icons/sunblack.svg';
+import ThermosIcon from '../../icons/thermostatblack.svg';
 
-const CityCurrentWeather = ({cityWeatherData: {current, location}}) => (
-	<React.Fragment>
-		<div>
+const CityCurrentWeather = ({cityWeatherData: {current}}) => (
+	<div className="city-weather-main-data">
+		<div className="city-weather-index">
 			<img src={current.condition.icon} alt={current.condition.text}/>
-			<label>{current.condition.text}</label>
-			<label>{location.localtime_epoch}</label>
-			<label>{current.temp_c}</label>
+			<label className="condition-label">{current.condition.text}</label>
+			<label className="last-updated">{current.last_updated}</label>
+			<label className="temperature-label">{current.temp_c + '°'}</label>
 		</div>
-		<div>
+		<div className="city-weather-misc">
 			<div>
-				<div>
-					{current.wind_kph}
+				<div className="city-weather-wind">
+					<img src={AirIcon} alt="Air"/>
+					<label className="left-title-label">Wind</label>
+					{current.wind_kph + ' kmph'}
 				</div>
-				<div>
-					{current.feelslike_c}
-				</div>
-			</div>
-			<div>
-				<div>
+				<div className="city-weather-uv">
+					<img src={SunIcon} alt="Sun"/>
+					<label className="left-title-label">Index UV</label>
 					{current.uv}
 				</div>
-				<div>
-					{current.pressure_mb}
+			</div>
+			<div>
+				<div className="city-weather-feels">
+					<img src={ThermosIcon} alt="Thermo"/>
+					<label className="right-title-label">Feels Like</label>
+					{current.feelslike_c + '°'}
+				</div>
+				<div className="city-weather-pressure">
+					<img src={PressureIcon} alt="Pressure"/>
+					<label className="right-title-label">Pressure</label>
+					{current.pressure_mb + ' mbor'}
 				</div>
 			</div>
 		</div>
-	</React.Fragment>
+	</div>
 );
 
 CityCurrentWeather.propTypes = {

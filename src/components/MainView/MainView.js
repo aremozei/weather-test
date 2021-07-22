@@ -134,7 +134,11 @@ const MainView = () => {
 			}
 			{weatherSingleCityResults !== null
 				&& <>
-					<CityHeader cityName={weatherSingleCityResults.location.name} onClickHandler={onHeaderClickHandler}/>
+					<CityHeader
+						cityName={weatherSingleCityResults.location.name}
+						cityCountry={weatherSingleCityResults.location.country}
+						onClickHandler={onHeaderClickHandler}
+					/>
 					<CityCurrentWeather cityWeatherData={weatherSingleCityResults} />
 				</>
 			}
