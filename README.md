@@ -15,4 +15,4 @@ Install the required dependencies with npm install
 
 What I tried to do here is to use different concepts from react.
 Yes, the end product might look like it doesn't have start nor beginning, but I wanted to display that I know the concepts. 
-I was planning to use context for the header, but time got in the way
+I was planning to use context for the header, but time and my job got in the way
